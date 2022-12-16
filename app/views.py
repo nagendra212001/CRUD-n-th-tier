@@ -32,7 +32,7 @@ def webpagedisplay(request):
     LWO=webpage.objects.filter(name__contains="h")
     LWO=webpage.objects.filter(name__regex="r\w{6}")
     LWO=webpage.objects.filter(Q(name__startswith='r') & Q(url__endswith="com"))
-    
+    LWO=webpage.objects.all()
 
     w={'LWO':LWO}
     return render(request,"webpagedisplay.html",w)
@@ -52,3 +52,34 @@ def accessdisplay(request):
 
     a={'LAO':LAO}
     return render(request,"accessdisplay.html",a)
+
+
+def update_webpage(request):
+    LWO=webpage.objects.all()
+    webpage.objects.filter(name="rahul").update(url="http://kabaddi.in")
+    t=topic.objects.get_or_create(topic_name="circket")[0]
+    t.save()
+    webpage.objects.update_or_create(name="SKY",defaults={'topic_name':t,'url':"http://skycricket.in"})
+    webpage.objects.update_or_create(name="king kohli",defaults={'topic_name':t,'url':"http://cricket.in"})
+    k=topic.objects.get_or_create(topic_name="boxing")[0]
+    webpage.objects.update_or_create(topic_name=k,defaults={'name':"rahul",'url':'http://rahulboxing.in'})
+    LWO=webpage.objects.all()
+    w={'LWO':LWO}
+    return render(request,"webpagedisplay.html",w)
+
+
+def delete_webpage(request):
+    LWO=webpage.objects.all()
+   
+    #webpage.objects.all().delete()
+    
+    webpage.objects.filter(name='praveen').delete()
+    LWO=webpage.objects.all()
+    
+    d={'LWO':LWO}
+    return render(request,"webpagedisplay.html",d)
+
+
+
+
+
